@@ -1,0 +1,109 @@
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Not Two</title>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/water.css@2/out/water.css"
+    />
+    <style>
+      html,
+      body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+        max-width: 100%;
+      }
+
+      body {
+        display: grid;
+        grid-template-rows: auto 1fr auto;
+      }
+
+      header {
+        display: grid;
+        grid-template-columns: 1fr auto;
+        color: var(--text-main);
+        background-color: var(--background);
+      }
+
+      main {
+        display: grid;
+        place-items: center;
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position: center;
+      }
+
+      footer {
+        display: grid;
+        place-items: center;
+        color: var(--text-main);
+        background-color: var(--background);
+      }
+
+      #word {
+        font-size: 4rem;
+        padding: 1rem;
+        background: rgba(255, 0, 0, 0.8);
+        color: white;
+      }
+
+      body > footer {
+        margin-top: 0;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1>☝️ Not Two</h1>
+      <button id="new">nouveau</button>
+    </header>
+    <main>
+      <p id="word"></p>
+    </main>
+    <footer>☝️ Not Two was built by @aloisdg</footer>
+
+    <script>
+      const wordsUrl =
+        "https://gist.githubusercontent.com/aloisdg/9dacb3ab543e52c7224a072acc54c168/raw/5711de4fafadb898cb0a3e70808a1d6cac1f301b/words.json";
+      const translationUrl =
+        "https://corsu.herokuapp.com/?http://translate.google.com/translate_a/t?client=j&hl=en&sl=fr&tl=en&text=";
+
+      const englishNounUrl =
+        "https://raw.githubusercontent.com/hugsy/stuff/main/random-word/english-nouns.txt";
+
+      const randomItem = (items) =>
+        items[Math.floor(Math.random() * items.length)];
+
+      const draw = (words) => {
+        const word = randomItem(words);
+        document.querySelector("#word").textContent = word;
+
+        // fetch(translationUrl + word, { mode: "cors" })
+        //   .then((x) => x.text())
+        //   .then((x) => {
+        //     console.log(x);
+        //   });
+        document.querySelector(
+          "main"
+        ).style.backgroundImage = `url('https://source.unsplash.com/random/?${word}')`;
+      };
+
+      const main = (words) => {
+        draw(words);
+        document.querySelector("#new").onclick = () => draw(words);
+      };
+
+      // fetch(wordsUrl)
+      //   .then((x) => x.json())
+      //   .then(main);
+      fetch(englishNounUrl)
+        .then((x) => x.text())
+        .then((x) => x.split("\n"))
+        .then(main);
+    </script>
+  </body>
+</html>
